@@ -1,4 +1,4 @@
-# Atividade Individual 1 — Serverless (Rota Vital)
+# Atividade Individual 1 - Serverless (Rota Vital)
 
 **Função serverless que valida a compatibilidade sanguínea (ABO/Rh) de uma requisição do Rota Vital.**
 Recebe `doador` e `receptor` e devolve se a transfusão é segura — a mesma regra que nasceu de testes na Parte 1 (TDD), agora como função serverless.
@@ -57,10 +57,10 @@ A função dorme 5s, mas o `Timeout` do `template.yaml` é 3s → erro de timeou
 ## Perguntas (respostas)
 
 **1. Por que a primeira invocação demorou mais que a segunda? O que acontece na fase de Init?**
-Na primeira chamada há um *cold start*: o SAM sobe um container novo, inicia o runtime Python e carrega o código antes de rodar o handler — essa preparação é a fase de **Init**. Na segunda, o ambiente já está pronto e é reaproveitado, então pula o Init e responde mais rápido.
+Na primeira chamada há um *cold start*: o SAM sobe um container novo, inicia o runtime Python e carrega o código antes de rodar o handler, essa preparação é a fase de **Init**. Na segunda, o ambiente já está pronto e é reaproveitado, então pula o Init e responde mais rápido.
 
 **2. O que `invocacaoNesteAmbiente` mostrou com e sem `--warm-containers`? O que isso diz sobre variável global?**
-**Sem** `--warm-containers`, cada chamada cria um container novo e descartável, então o contador fica **sempre 1**. **Com** `--warm-containers LAZY`, o container é reaproveitado e o contador **cresce** (1, 2, 3...). Conclusão: **não dá para confiar em variável global para guardar estado** entre invocações — o ambiente pode ser recriado a qualquer momento. Estado tem que ir para fora (banco, cache, fila).
+**Sem** `--warm-containers`, cada chamada cria um container novo e descartável, então o contador fica **sempre 1**. **Com** `--warm-containers LAZY`, o container é reaproveitado e o contador **cresce** (1, 2, 3...). Conclusão: **não dá para confiar em variável global para guardar estado** entre invocações, o ambiente pode ser recriado a qualquer momento. Estado tem que ir para fora (banco, cache, fila).
 
 **3. O que aconteceu com `demorar = true`? Qual o tempo máximo no Lambda, e o que fazer com trabalho mais longo?**
 A função dormiu 5s e foi **interrompida pelo Timeout de 3s** (erro). Na AWS, o tempo máximo de uma execução do Lambda é **15 minutos**. Para trabalho mais longo: quebrar o processo com **Step Functions**, processar **assíncrono por fila** (SQS), ou mover para um serviço sempre ligado (container).
