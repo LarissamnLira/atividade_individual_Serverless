@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Funcao serverless do Rota Vital: valida a compatibilidade ABO/Rh de
+  uma requisicao.
+
+  '
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 128
+Resources:
+  CompatibilidadeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CompatibilidadeFunction
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Architectures:
+      - x86_64
+      Events:
+        Compatibilidade:
+          Type: Api
+          Properties:
+            Path: /compatibilidade
+            Method: post
+    Metadata:
+      SamResourceId: CompatibilidadeFunction
+Outputs:
+  CompatibilidadeApi:
+    Description: URL local da API (apos sam local start-api)
+    Value: http://127.0.0.1:3000/compatibilidade
