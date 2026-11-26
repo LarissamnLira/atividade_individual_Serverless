@@ -5,7 +5,7 @@ Description: >
 
 Globals:
   Function:
-    Timeout: 3          # 3 segundos: proposital, para o experimento de timeout (Passo 5)
+    Timeout: 3
     MemorySize: 128
 
 Resources:

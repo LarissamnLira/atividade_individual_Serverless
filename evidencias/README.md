@@ -1,14 +1,12 @@
-# Evidências — Serverless (AWS Lambda)
+# Evidências — Serverless (SAM CLI local)
 
-Capturar os prints abaixo (o enunciado exige evidência de cada item):
+Capturar os prints:
 
-- [ ] Função criada no console do Lambda (Python 3.12) — `01-funcao-criada.png`
-- [ ] Aba **Test** com o evento `pedido.json` retornando 200 + a guia/compatibilidade — `02-test-evento.png`
-- [ ] **Duas invocações** com os tempos (Duration) anotados — `03-duas-invocacoes.png`
-- [ ] **Function URL** criada — `04-function-url.png`
-- [ ] Chamada por **curl** na Function URL (rodar 3x, mostrando `invocacaoNesteAmbiente` crescendo) — `05-curl-http.png`
-- [ ] `demorar=true` estourando o **Timeout de 3s** (erro) — `06-timeout-erro.png`
-- [ ] Após subir o Timeout para 10s, a mesma chamada funcionando — `07-timeout-ok.png`
-- [ ] Log do **CloudWatch** mostrando **Init Duration** (cold start) e **Duration** — `08-cloudwatch-init.png`
+- [ ] `sam build` concluído — `01-sam-build.png`
+- [ ] `sam local invoke` com o evento, rodado **2 vezes**, tempos anotados — `02-invoke-2x.png`
+- [ ] `sam local start-api` no ar + `curl` 3x (sem --warm-containers): `invocacaoNesteAmbiente` sempre 1 — `03-curl-sem-warm.png`
+- [ ] `sam local start-api --warm-containers LAZY` + `curl` 3x: contador cresce (1,2,3) — `04-curl-com-warm.png`
+- [ ] `demorar:true` estourando o Timeout de 3s (erro) — `05-timeout-erro.png`
+- [ ] Após Timeout=10 no template.yaml + `sam build`, a mesma chamada funcionando — `06-timeout-ok.png`
 
-Vídeo (até 3 min, gravação de tela): invocação com evento + chamada por HTTP + erro de tempo limite.
+Vídeo (até 3 min): invocação com evento + chamada por HTTP (curl) + erro de tempo limite.
