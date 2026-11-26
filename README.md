@@ -18,7 +18,7 @@ Recebe `doador` e `receptor` e devolve se a transfusão é segura. É a mesma re
 
 A resposta inclui `invocacaoNesteAmbiente`, um contador em **variável global** usado para observar o reaproveitamento do ambiente de execução.
 
-## Como rodar (AWS Lambda — Caminho B)
+## Como rodar (AWS Lambda)
 
 > Antes: crie um **alerta de orçamento** (AWS Budgets) de poucos dólares. Ao terminar, **apague a Function URL e a função**. A faixa sempre gratuita do Lambda (1M requisições + 400k GB-s/mês) cobre este teste.
 
@@ -35,7 +35,7 @@ A resposta inclui `invocacaoNesteAmbiente`, um contador em **variável global** 
 6. **Cold start** — em *Monitor → View CloudWatch logs*, abra um log e veja o **Init Duration** (fase de inicialização) e a **Duration**.
 7. **Limpeza** — apague a Function URL e a função.
 
-## Perguntas (respostas)
+## Questões
 
 **1. Por que a primeira invocação demorou mais que a segunda? O que acontece na fase de Init?**
 Na primeira chamada ocorre um *cold start*: a AWS provisiona um ambiente de execução novo, baixa o código, inicia o runtime Python e só então roda o handler — isso é a fase de **Init** (aparece como *Init Duration* no CloudWatch). Na segunda chamada, o ambiente já está "quente" e é reaproveitado, pulando o Init; por isso é mais rápida.
@@ -54,7 +54,7 @@ A função dormiu 5s e foi **encerrada pelo Timeout de 3s** (erro `Task timed ou
 **5. Em que parte do Rota Vital uma função assim faria sentido, e em qual não faria?**
 A validação de compatibilidade é **pura e sem estado**, então tecnicamente é amigável a serverless — e faria sentido como função **acionada por evento** (ex.: emitir a guia de transporte quando uma requisição é atendida, ou processar leituras de telemetria em rajada). Onde **não** faria sentido: no **caminho crítico do Atendimento em tempo real** — uma decisão à vida do paciente não deveria pagar o custo de um *cold start*, e o acesso ao banco em alto volume sofre com o limite de conexões e com *connection storms* típicos de serverless. Para esse caminho, mantém-se um serviço sempre ligado. Resumo: serverless para o que é eventual, stateless e tolerante a latência; serviço contínuo para o caminho crítico e com muitas conexões de banco.
 
-## Uso de IA (PO-CESAR-021 — permitido com declaração)
+## Uso de IA
 
 - **Ferramenta:** Claude (assistente de IA).
 - **Finalidade:** rascunhar o código da função (regra ABO/Rh reaproveitada da Parte 1), os eventos de teste, a estrutura do README e a conta de custo.
