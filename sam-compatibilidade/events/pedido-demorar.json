@@ -1,0 +1,5 @@
+{
+  "body": "{\"requisicaoId\":\"R-003\",\"doador\":\"O-\",\"receptor\":\"O-\",\"demorar\":true}",
+  "httpMethod": "POST",
+  "path": "/compatibilidade"
+}
